@@ -61,9 +61,11 @@ fn main() -> ! {
         Settings {
             data_order: DataOrder::MostSignificantFirst,
             clock: SerialClockRate::OscfOver4,
-            mode: embedded_hal::spi::Mode {
-                polarity: embedded_hal::spi::Polarity::IdleLow,
-                phase: embedded_hal::spi::Phase::CaptureOnFirstTransition,
+            mode: match 3 {
+                0 => embedded_hal::spi::MODE_0, // works
+                1 => embedded_hal::spi::MODE_1, // black screen, does not work.
+                2 => embedded_hal::spi::MODE_2, // works
+                _ => embedded_hal::spi::MODE_3, // works
             },
         }
     );
