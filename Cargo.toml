@@ -1,0 +1,63 @@
+[package]
+name = "ili9341-exp-2"
+version = "0.1.0"
+authors = ["Robert Forsman <git@thoth.purplefrog.com>"]
+edition = "2018"
+resolver = "2"
+
+
+[features]
+atmega2560 = [ "arduino-hal/arduino-mega2560", "atmega-hal/atmega2560", "arduino-spi/atmega2560"]
+atmega328p = [ "arduino-hal/arduino-uno", "atmega-hal/atmega328p", "arduino-spi/atmega328p"]
+
+[dependencies]
+panic-halt = "0.2.0"
+ufmt = "*"
+rand = {version="*", default-features=false, features=["small_rng"]}
+#void={ version = "*", default_features=false }
+avr-progmem = "*"
+ili9341 = "*"
+display-interface = "*"
+display-interface-spi = "*"
+embedded-hal = "*"
+
+[dependencies.arduino-spi]
+git="https://github.com/mutantbob/arduino-spi.git"
+#path="../../arduino-spi"
+
+[dependencies.rust-arduino-runtime]
+git="https://github.com/mutantbob/rust-arduino-helpers.git"
+branch="2022-mar-kludge"
+#path = "../../rust-arduino-helpers/rust-arduino-runtime"
+
+[dependencies.avr-hal-generic]
+git = "https://github.com/rahix/avr-hal"
+rev = "d0d2f243bd3e10b49f6a78d44839a6caa8be7d43"
+#rev = "f84c0dff774c2292bc932b670955165161ecc7d1"
+
+[dependencies.arduino-hal]
+git = "https://github.com/rahix/avr-hal"
+rev = "d0d2f243bd3e10b49f6a78d44839a6caa8be7d43"
+#rev = "f84c0dff774c2292bc932b670955165161ecc7d1"
+
+[dependencies.atmega-hal]
+git = "https://github.com/rahix/avr-hal"
+rev = "d0d2f243bd3e10b49f6a78d44839a6caa8be7d43"
+#rev = "f84c0dff774c2292bc932b670955165161ecc7d1"
+
+# Configure the build for minimal size - AVRs have very little program memory
+[profile.dev]
+panic = "abort"
+lto = true
+opt-level = "s"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+debug = true
+lto = true
+opt-level = "z"
+
+[patch.crates-io]
+ufmt = { git = "https://github.com/mrk-its/ufmt.git", branch="ptr_width_16_fix" }
+cty = { git="https://github.com/mutantbob/cty.git", branch="2022-Feb-avr" }
