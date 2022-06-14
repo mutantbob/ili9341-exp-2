@@ -219,16 +219,30 @@ fn test4<IFACE: WriteOnlyDataCommand, RST>(
     monitor: &mut Ili9341<IFACE, RST>,
     serial: &mut dyn uWrite<Error = Void>,
 ) {
-    let rect_width: u16 = monitor.width() as u16 / 16;
-    let rect_height: u16 = monitor.height() as u16 / 16 - 2;
+    let monitor_width = monitor.width() as u16;
+    let monitor_height = monitor.height() as u16;
+
+    const WHITE: u16 = 0; // XXX why is 0 white?
+
+    let rect_width: u16 = monitor_width / 16;
+    let rect_height: u16 = monitor_height / 16 - 2;
 
     for rotation in [
         Orientation::Landscape,
-        // Orientation::LandscapeFlipped,
+        Orientation::LandscapeFlipped,
         // Orientation::Portrait,
         // Orientation::PortraitFlipped,
     ] {
         let _ = monitor.set_orientation(rotation);
+
+        let _ = monitor.draw_raw_iter(
+            0,
+            0,
+            monitor_width - 1,
+            monitor_height - 1,
+            (0..(monitor_height as u32 * monitor_width as u32)).map(|_| WHITE),
+        );
+
         for idx in 0..256 {
             let col = idx % 16;
             let row = idx / 16;
@@ -243,6 +257,7 @@ fn test4<IFACE: WriteOnlyDataCommand, RST>(
 
             let _ = monitor.draw_raw_iter(x, y, x + rect_width - 1, y + rect_height - 1, iter);
         }
+
         delay_ms(1000);
     }
 }
