@@ -223,6 +223,17 @@ fn test4<IFACE: WriteOnlyDataCommand, RST>(
     let monitor_height = monitor.height() as u16;
 
     const WHITE: u16 = 0; // XXX why is 0 white?
+    const BLUE: u16 = !0xe0;
+    const GREEN: u16 = !7;
+    const RED: u16 = !0x18;
+
+    const FILL: u16 = match 4 {
+        0 => WHITE,
+        1 => RED,
+        2 => GREEN,
+        3 => BLUE,
+        _ => (RED & BLUE),
+    };
 
     let rect_width: u16 = monitor_width / 16;
     let rect_height: u16 = monitor_height / 16 - 2;
@@ -240,7 +251,7 @@ fn test4<IFACE: WriteOnlyDataCommand, RST>(
             0,
             monitor_width - 1,
             monitor_height - 1,
-            (0..(monitor_height as u32 * monitor_width as u32)).map(|_| WHITE),
+            (0..(monitor_height as u32 * monitor_width as u32)).map(|_| FILL),
         );
 
         for idx in 0..256 {
