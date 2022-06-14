@@ -103,14 +103,33 @@ fn main() -> ! {
 
     //monitor.
 
+    let _ = uwriteln!(
+        &mut serial,
+        "color test: red {:#x} ; green {:#x} ; blue {:#x}",
+        rgb565_to_g3r2b3(0xf800),
+        rgb565_to_g3r2b3(0x07e0),
+        rgb565_to_g3r2b3(0x001f),
+    );
+
+    decode_rgb565(0xffff, &mut serial);
+    decode_rgb565(0xd086, &mut serial);
+    decode_rgb565(0x0547, &mut serial);
+
     loop {
-        match 4 {
+        match 1 {
             1 => test1(&mut prng, &mut monitor, &mut serial),
             2 => test2(&mut monitor, &mut serial),
             3 => test3(&mut monitor, &mut serial),
             _ => test4(&mut monitor, &mut serial),
         }
     }
+}
+
+fn decode_rgb565(rgb565: u16, serial: &mut dyn uWrite<Error = Void>) {
+    let red = rgb565 >> 11;
+    let green = 0x3f & (rgb565 >> 5);
+    let blue = 0x1f & rgb565;
+    let _ = uwriteln!(serial, "r={}/31; g={}/63; b={}/31", red, green, blue);
 }
 
 fn test1<IFACE: WriteOnlyDataCommand, RST>(
@@ -134,11 +153,20 @@ fn test1<IFACE: WriteOnlyDataCommand, RST>(
 
     let _ = uwriteln!(serial, "at {},{}", x, y);
 
-    let iter = dragon;
+    let iter = dragon.iter().map(|rgb565| !rgb565_to_g3r2b3(rgb565));
 
     let _ = monitor.draw_raw_iter(x, y, x + DRAGON_WIDTH - 1, y + DRAGON_HEIGHT - 1, iter);
 
     delay_ms(500);
+}
+
+fn rgb565_to_g3r2b3(rgb565: u16) -> u16 {
+    let red = rgb565 >> 11;
+    let green = (rgb565 >> 5) & 0x3f;
+    let blue = rgb565 & 0x1f;
+
+    //(green << 2) & 0xe0 | (red & 0x18) | (blue >> 2)
+    (blue << 3) & 0xe0 | (red & 0x18) | (green >> 3)
 }
 
 fn test2<IFACE: WriteOnlyDataCommand, RST>(

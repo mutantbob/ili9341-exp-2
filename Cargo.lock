@@ -610,7 +610,7 @@ checksum = "b1141d4d61095b28419e22cb0bbf02755f5e54e0526f97f1e3d1d160e60885fb"
 [[package]]
 name = "ufmt"
 version = "0.1.0"
-source = "git+https://github.com/mrk-its/ufmt.git?branch=ptr_width_16_fix#e6e574625e89bce9a5cb907eae43bfd45672f768"
+source = "git+https://github.com/mutantbob/ufmt.git?branch=hex_support#a93799f188de470b708908e544dc9841a55def1b"
 dependencies = [
  "proc-macro-hack",
  "ufmt-macros",
@@ -620,7 +620,7 @@ dependencies = [
 [[package]]
 name = "ufmt-macros"
 version = "0.1.1"
-source = "git+https://github.com/mrk-its/ufmt.git?branch=ptr_width_16_fix#e6e574625e89bce9a5cb907eae43bfd45672f768"
+source = "git+https://github.com/mutantbob/ufmt.git?branch=hex_support#a93799f188de470b708908e544dc9841a55def1b"
 dependencies = [
  "proc-macro-hack",
  "proc-macro2",
@@ -631,7 +631,7 @@ dependencies = [
 [[package]]
 name = "ufmt-write"
 version = "0.1.0"
-source = "git+https://github.com/mrk-its/ufmt.git?branch=ptr_width_16_fix#e6e574625e89bce9a5cb907eae43bfd45672f768"
+source = "git+https://github.com/mutantbob/ufmt.git?branch=hex_support#a93799f188de470b708908e544dc9841a55def1b"
 
 [[package]]
 name = "unicode-ident"

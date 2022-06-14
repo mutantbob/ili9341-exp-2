@@ -59,5 +59,6 @@ lto = true
 opt-level = "z"
 
 [patch.crates-io]
-ufmt = { git = "https://github.com/mrk-its/ufmt.git", branch="ptr_width_16_fix" }
+#ufmt = { git = "https://github.com/mrk-its/ufmt.git", branch="ptr_width_16_fix" }
+ufmt = { git = "https://github.com/mutantbob/ufmt.git", branch="hex_support" }
 cty = { git="https://github.com/mutantbob/cty.git", branch="2022-Feb-avr" }
